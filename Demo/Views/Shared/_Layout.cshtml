@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Demo</title>
+
+    <environment include="Production">
+        <link rel="stylesheet" href="~/css/vendor.css" />
+        <link rel="stylesheet" href="~/css/site.min.css" />
+    </environment>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/web-fonts-with-css/css/fontawesome-all.css" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    </environment>
+</head>
+<body class="app">
+    <nav class="navbar navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <i class="fa fa-align-justify"></i>
+                </button>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Demo</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a asp-area="" asp-route="Home">Home</a></li>
+                    <li><a asp-area="" asp-controller="Article" asp-action="List">All Articles</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a asp-area="" asp-controller="Article" asp-action="Create">New Article</a></li>
+
+                </ul>
+                @await Component.InvokeAsync("Toolbar")
+
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @if (TempData["message"] != null)
+        {
+            <div class="alert alert-success">@TempData["message"].ToString()</div>
+        }
+
+        @if (TempData["error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["error"].ToString()</div>
+        }
+        @RenderBody()
+
+    </div>
+
+    <environment include="Production">
+        <script src="~/js/vendor.js" asp-append-version="true"></script>
+        <script src="~/js/app.min.js" asp-append-version="true"></script>
+    </environment>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
+
+        <script src="~/js/app.js" asp-append-version="true"></script>
+    </environment>
+    @RenderSection("Scripts", required: false)
+
+    <script type="text/javascript">
+        app.ready(function () {
+            $("[data-toggle=tooltip]").each(function () {
+                // we do not want to show tooltip over uncut strings
+                if ($(this).width() > $(this).parent().width()) {
+                    $(this).tooltip();
+                }
+            });
+        })
+    </script>
+</body>
+</html>

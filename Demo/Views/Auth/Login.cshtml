@@ -1,0 +1,50 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form asp-action="Login" id="authentication-form" asp-controller="Auth" method="post">
+            <input type="hidden" asp-for="ReturnURL" />
+            <div class="form-group">
+                <label for="selectUser">Select A User To Login</label>
+                <select class="form-control" name="demoLogin"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="EMailAddress"></label>
+                <div><span asp-validation-for="EMailAddress" class="text-danger"></span></div>
+                <input asp-for="EMailAddress" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <div><span asp-validation-for="Password" class="text-danger"></span></div>
+                <input asp-for="Password" class="form-control" />
+            </div>
+            <button class="btn btn-primary" type="submit">Log In</button>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript" data-async-exec="true">
+        app.ready(function () {
+            this.selectComponent.create({
+                url: "/Auth/GetUsers",
+                target: $("select[name=demoLogin]"),
+                valueField: "id",
+                textFormatter: function () {
+                    return this.firstName + " " +
+                        this.lastName + " - " +
+                        (this.userType === 0 ? "Manager" : "User")
+                },
+                onChange: function (dataItem) {
+                    if (dataItem == null) return;
+                    $("#EMailAddress").val(dataItem.email);
+                    $("#Password").val(dataItem.password);
+                    $("form").submit();
+                }
+            })
+        });
+    </script>
+}

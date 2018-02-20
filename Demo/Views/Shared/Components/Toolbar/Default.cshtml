@@ -1,0 +1,34 @@
+﻿@model Demo.Models.Entities.User
+
+@if (Model is null)
+{
+    <ul class="nav navbar-nav navbar-right navbar-user-profile">
+        <li><a asp-area="" asp-route="Auth">Login</a></li>
+    </ul>
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right navbar-user-profile navbar-user-loggedin">
+        <li class="dropdown">
+            <div class="navbar-form">
+                <div class="btn-group">
+                    <a class="btn btn-default dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        @Model.FirstName @Model.LastName
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        @if (Model.UserType == Demo.Models.Entities.UserType.MANAGER)
+                        {
+                        <li><a asp-controller="Article" asp-action="Create">New Article</a></li>
+                        <li><a href="#">Reports</a></li>
+                        <li role="separator" class="divider"></li>
+                        }
+                        <li><a asp-controller="Auth" asp-action="Logout">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    </ul>
+    
+}
+

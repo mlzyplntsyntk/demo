@@ -1,0 +1,96 @@
+﻿@{
+    ViewData["Title"] = "Article Detail";
+}
+@model ArticleDetailViewModel
+
+
+<div class="row">
+    <div class="col-md-3 col-sm-4">
+        <div class="panel panel-article-detail">
+            <div class="panel-body">
+                <div class="info">
+                    <div><i class="fa fa-user-circle"></i><span>by @Model.Article.User.FirstName @Model.Article.User.LastName</span></div>
+                    <div><i class="fa fa-clock"></i><span>@Model.Article.CreationTime.ToString("dd MMM yyyy HH:mm")</span></div>
+                    <div><i class="fa fa-heart"></i><span><span class="total-likes">@Model.Article.TotalLikes</span> Likes</span></div>
+                    <div><i class="fa fa-eye"></i><span><span class="total-reads">@Model.Article.TotalReads</span> Reads</span></div>
+                </div>
+                <div class="actions">
+                    @if (Model.User != null && Model.User.Id.Equals(Model.Article.User.Id))
+                    {
+                    
+                    <div>
+                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Article.Id"><i class="fa fa-edit"></i> Edit</a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Article.Id"><i class="fa fa-eraser"></i> Delete</a>
+                    </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <button class="btn btn-like"><i class="fa"></i> <span></span></button>
+                        </div>
+
+                    }
+                    
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="col-md-9 col-sm-8">
+        <h1>@Model.Article.Title</h1>
+        <div>@Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.Article.Content))</div>
+    </div>  
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+    app.ready(function () {
+        // i will store the liked property in a variable so i can do dynamic actions on it
+        app.setVariable("liked", @(Model.Liked ? "true" : "false"));
+
+        // changes the button's design depending on the state of like
+        function changeLikeButton() {
+            var liked = app.getVariable("liked");
+            var btnClass = liked ? "btn-primary" : "btn-default";
+            var btnIconClass = liked ? "fa-thumbs-down" : "fa-thumbs-up";
+            var btnText = liked ? "Undo Like" : "Like";
+            $(".btn-like").removeClass().addClass("btn btn-like " + btnClass);
+            $(".btn-like > i").removeClass().addClass("fa " + btnIconClass);
+            $(".btn-like > span").html(btnText);
+        }
+
+        // trigger the button design for the first time.
+        changeLikeButton();
+
+
+        var $t = this;
+        $(".btn-like").on("click", function () {
+            $(".btn-like").attr("disabled", true);
+            // if user is not authenticated this function below will be overridden
+            // for the sake of login implementation, see the descriptions on private
+            // request function for details at wwwroot/js/app.js
+
+            // there is one down side here to mention : 
+            // if user is not authenticated and liked the article before;
+            // when he hits the Like button and Login Form shows up and he
+            // authenticates;
+            // the button will not be updated until he presses the button 
+            // or refreshes the page. that's a known issue.
+            $t.httpGet({
+                url: $t.getVariable("liked") ? "/Article/UndoLike/@Model.Article.Id" : "/Article/Like/@Model.Article.Id",
+                done: function (result) {
+
+                    var likeCount = result.entity.article.totalLikes,
+                        currentState = result.entity.liked;
+
+                    app.setVariable("liked", currentState);
+                    $(".total-likes").html(likeCount);
+                    changeLikeButton();
+                }, always: function () {
+                    $(".btn-like").attr("disabled", false);
+                }
+            })
+        });
+    });
+    </script>
+}

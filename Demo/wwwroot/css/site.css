@@ -1,0 +1,142 @@
+﻿
+@font-face {
+    font-family: 'Avenir Roman';
+    src: url('../fonts/avenir/Avenir-Roman.eot');
+    src: url('../fonts/avenir/Avenir-Roman?#iefix') format('embedded-opentype'), url('../fonts/avenir/Avenir-Roman.woff') format('woff'), url('../fonts/avenir/Avenir-Roman.ttf') format('truetype'), url('../fonts/avenir/Avenir-Roman.svg#linecons') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Avenir Medium';
+    src: url('../fonts/avenir/Avenir-Medium.eot');
+    src: url('../fonts/avenir/Avenir-Medium?#iefix') format('embedded-opentype'), url('../fonts/avenir/Avenir-Medium.woff') format('woff'), url('../fonts/avenir/Avenir-Medium.ttf') format('truetype'), url('../fonts/avenir/Avenir-Medium.svg#linecons') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Avenir Heavy';
+    src: url('../fonts/avenir/Avenir-Heavy.eot');
+    src: url('../fonts/avenir/Avenir-Heavy?#iefix') format('embedded-opentype'), url('../fonts/avenir/Avenir-Heavy.woff') format('woff'), url('../fonts/avenir/Avenir-Heavy.ttf') format('truetype'), url('../fonts/avenir/Avenir-Heavy.svg#linecons') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Avenir Black';
+    src: url('../fonts/avenir/Avenir-Black.eot');
+    src: url('../fonts/avenir/Avenir-Black?#iefix') format('embedded-opentype'), url('../fonts/avenir/Avenir-Black.woff') format('woff'), url('../fonts/avenir/Avenir-Black.ttf') format('truetype'), url('../fonts/avenir/Avenir-Black.svg#linecons') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+* {
+    font-family: "Avenir Medium";
+}
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background-color: #ebeeef !important;
+}
+
+.navbar {
+    background: rgb(255, 255, 255);
+    border-bottom: 1px solid rgb(221, 221, 221);
+}
+.dropdown-toggle {
+    border: none;
+}
+
+.panel, .btn, .form-control, .modal-content, .dropdown-menu {
+    border-radius: 0px;
+}
+.dropdown-menu {
+    margin:0px;
+}
+.hover-effect {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    transition: all 0.3s ease-in-out;
+}
+
+.hover-effect::after {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: opacity 0.3s ease-in-out;
+}
+.hover-effect:hover {
+    transform: scale(1.05, 1.05);
+}
+.hover-effect:hover::after {
+    opacity: 1;
+}
+
+h1, h2, h3, h4, h5 {
+    color: rgb(0, 189, 112);
+    font-size:20px;
+}
+.nav > li > a {
+    color: rgb(0, 189, 112);
+}
+.nav > li > a:hover, .nav > li > a:focus {
+    background-color: rgb(0, 189, 112);
+    color: #fff;
+}
+.panel-article-list .dropdown-toggle {
+    padding:0px;
+    background:transparent;
+}
+.label-default {
+    background-color: rgb(0, 189, 112);
+}
+.panel-article-detail {
+    margin-top:20px;
+}
+.info > div {
+    padding: 10px 0px;
+    border-bottom: 1px solid #ccc;
+}
+.actions > div {
+    padding: 10px 0px;
+}
+.actions > div > .btn {
+    width:100%;
+}
+.article-title {
+    padding-top:10px;
+}
+@media (min-width: 848px) {
+    .article-title {
+        display: inline-block;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden !important;
+        text-overflow: ellipsis;
+    }
+}
+@media (max-width: 768px) {
+    .info > div {
+        padding: 10px 0px;
+        border-bottom: none;
+        width: 25%;
+        float: left;
+        text-align: center;
+        line-height:25px;
+    }
+    .info > div > i {
+        width:100%;
+    }
+    .info > div > span {
+        width: 100%;
+        font-size:10px;
+        white-space:nowrap;
+        overflow:hidden;
+    }
+}
+
+h2 {
+    display:inline-block;
+}
+
+.nav-tabs {
+    margin:20px 0px;
+    border-bottom-width:0px;
+}

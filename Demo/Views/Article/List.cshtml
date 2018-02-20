@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Article Listing";
+}
+@model ArticleListViewModel
+
+<div class="row">
+    <div class="col-md-12">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="@(Model.ViewKey == ("latest") ? "active" : "")"><a asp-controller="Articles" asp-action="List">Latest<span class="hidden-xs"> Articles</span></a></li>
+            <li class="@(Model.ViewKey == ("likes") ? "active" : "")"><a asp-controller="Articles" asp-action="Popular">Popular<span class="hidden-xs"> Articles</span></a></li>
+            <li class="@(Model.ViewKey == ("reads") ? "active" : "")"><a asp-controller="Articles" asp-action="MostRead">Most Read<span class="hidden-xs"> Articles</span></a></li>
+        </ul>
+    </div>
+
+@Html.Partial("_ArticleList", Model)
+
+
+@section Scripts {
+    <script type="text/javascript">
+        // Unlike the Login implementation of anonymous users
+        // when they try to Like an article; here we get the 
+        // next set of results partially. So we'll again cast
+        // them to a jquery object
+
+        // the reason why i did not implement this as a web API is that
+        // the functionality may need to change from "Load More" strategy
+        // to classical paging strategy. Or both could be used depending
+        // on the user's preferences.
+        app.ready(function () {
+            var $t = this;
+
+            // listen to the button events : 
+            // another option could be to use an appear plugin
+            // to check whether the user hit the bottom of the page
+            // and load next set of results automatically. 
+
+            $(".btn-load-next").on("click", function (e) {
+                e.preventDefault(); // preventing default behaviour
+
+                $t.httpGet({
+                    url: $(this).attr("href"),
+                    done: function (result) {
+                        renderResults(result);
+                    },
+                    validateResult: false
+                })
+            });
+
+            function renderResults(result) {
+
+                // beware that the model of the returning result
+                // can have 2 root objects in it. So we need to 
+                // create the root object on our own, and let
+                // jquery create the document tree.
+
+                var object = $('<div/>');
+
+                var target = $(".btn-load-next");
+
+                object.html(result);
+
+                // all the children at first node should be a div
+
+                var childNodesLength = object.find(">div").length;
+
+                if (childNodesLength.length === 0) return;
+
+                // the target variable is a reference to the button
+                // which is clicked to retrieve result, we need
+                // this reference to render the results just before 
+                // it's parent div.row node.
+                let cloneObject = object.find(">div").first().clone();
+                cloneObject.insertBefore(target.parents(".row").first());
+
+                // now let's check if another page is available
+                var nButton = object.find(".btn-load-next");
+
+                if (nButton.length > 0) {
+                    // modify our button's href attribute with the new 
+                    // button's attribute
+                    target.attr("href", nButton.attr("href"));
+                } else {
+                    // if no other pages are available, also remove
+                    // our target button from document tree
+                    target.parents(".row").first().remove();
+                }
+                //finally disposing the object
+                delete object;
+            }
+        });
+    </script>
+}

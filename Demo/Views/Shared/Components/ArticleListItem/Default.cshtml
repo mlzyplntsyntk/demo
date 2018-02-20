@@ -1,0 +1,34 @@
+﻿@model Demo.Models.ViewModels.ArticleListItemViewModel
+
+<div class="col-md-4 col-sm-6">
+    <div class="panel panel-default panel-article-list hover-effect">
+        <div class="panel-body">
+            <div class="article-heading">
+                <span>
+                    <i class="fa fa-user-circle"></i> by @Model.Article.User.FirstName @Model.Article.User.LastName
+                </span>
+                @if (Model.User != null && Model.Article.User.Id.Equals(Model.User.Id))
+                {
+                <!-- Single button -->
+                <div class="btn-group pull-right">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-edit"></i>
+                    </button>   
+                    <ul class="dropdown-menu">
+                        <li><a asp-action="Delete" asp-controller="Article" asp-route-id="@Model.Article.Id">Delete</a></li>
+                        <li><a asp-action="Edit" asp-controller="Article" asp-route-id="@Model.Article.Id">Edit</a></li>
+                    </ul>
+                </div>
+                }
+            </div>
+            <div class="article-title">
+                <a href="/@Model.Article.GetFriendlyURL()"  data-toggle="tooltip" data-placement="top" title="@Model.Article.Title">@Model.Article.Title</a>
+            </div>
+        </div>
+        <div class="panel-footer clearfix">
+            <span class="label label-info"><i class="fa fa-heart"></i> @Model.Article.TotalLikes Likes</span>
+            <span class="label label-warning"><i class="fa fa-eye"></i> @Model.Article.TotalReads Reads</span>
+            <span class="label label-default pull-right"><i class="fa fa-clock"></i> @Model.Article.CreationTime.ToString("dd MMM yyyy")</span>
+        </div>
+    </div>
+</div>

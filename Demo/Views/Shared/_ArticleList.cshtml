@@ -1,0 +1,18 @@
+﻿@model ArticleListViewModel
+<div class="row">
+    @foreach (var p in Model.Articles)
+    {
+        @await Component.InvokeAsync("ArticleListItem", p)
+
+    }
+</div>
+@if (Model.PagingInfo.HasNext)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <p class="text-center">
+                <a class="btn btn-load-next" asp-action="List" asp-route-page="@(Model.PagingInfo.CurrentPage+1)"><i class="fa fa-arrow-alt-circle-down"></i> Load More Articles</a>
+            </p>
+        </div>
+    </div>
+}

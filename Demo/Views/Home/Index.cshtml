@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<ArticleListViewModel>
+
+@foreach (ArticleListViewModel item in Model)
+{
+    <div class="row">
+        <div class="col-md-12">
+
+            <h2>@item.ViewTitle</h2>
+            <a asp-controller="Articles" asp-action="@item.PageAction"><i class="fa fa-angle-right"></i> Show All @item.ViewTitle</a>
+        </div>
+    </div>
+    
+    @Html.Partial("_ArticleList", item)
+}

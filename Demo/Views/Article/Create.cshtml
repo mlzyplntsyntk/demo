@@ -1,0 +1,46 @@
+﻿@model Article
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>@ViewBag.FormTitle</h2>
+<div class="text-danger" asp-validation-summary="All"></div>
+
+<div class="alert alert-info"><i class="fa fa-info"></i> Click <a href="javascript:;">here</a> to logout asynchronously. Then try to save the article.</div>
+
+<form asp-action="Create" id="create-form" asp-controller="Article" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <div><span asp-validation-for="Title" class="text-danger"></span></div>
+        <input asp-for="Title" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Content"></label>
+        <div><span asp-validation-for="Content" class="text-danger"></span></div>
+        <textarea asp-for="Content" class="form-control"></textarea>
+    </div>
+    <button class="btn btn-primary" type="submit">@ViewBag.ButtonTitle</button>
+</form>
+@section Scripts {
+
+    <script src="~/lib/ckeditor/ckeditor.js"></script>
+    <script>
+        app.ready(function () {
+            CKEDITOR.replace('Content');
+            var $t = this;
+            $(".alert > a").click(function () {
+                $t.httpGet({ url: "/Auth/Logout" })
+            });
+            $t.submitFormAsync($("#create-form"), {
+                done: function (result) {
+                    if (result.status) {
+                        window.location.href = "/" + result.articleURL;
+                    } else {
+                        alert("Unknown Error");
+                    }
+                }
+            });
+        })
+    </script>
+}
